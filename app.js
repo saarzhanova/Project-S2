@@ -5,24 +5,25 @@ const maxResults = 50;
 let nextPageToken = null;
 let i = 1;
 
+let allVideos = [];
+let shownVideos = new Set();
 async function fetchVideos(pageToken = '') {
     const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${maxResults}&playlistId=${playlistId}&key=${apiKey}&pageToken=${pageToken}`;
 
     try {
         const res = await fetch(url);
         const data = await res.json();
-        let allVideos = data.items
+        let videos = data.items
 
-        if (allVideos) {
-            allVideos.forEach(video => {
-                videoSection.innerHTML += `<h3>${i}. ${video.snippet.title}</h3>`;
-                i++;
-            });
+        if (videos) {
+            allVideos.push(...videos);
         }
 
         let isNextPageExists = data.nextPageToken
         if (isNextPageExists) {
             fetchVideos(data.nextPageToken);
+        } else {
+        console.log(`Loaded video number: ${allVideos.length}`);
         }
     } catch (err) {
         console.error(err);
