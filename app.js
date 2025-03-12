@@ -49,12 +49,12 @@ function getRandomVideo() {
     } while (shownVideos.has(randomIndex));
 
     shownVideos.add(randomIndex);
-    const video = allVideos[randomIndex];
+    const videoId = allVideos[randomIndex].snippet.resourceId.videoId;
 
-    videoSection.innerHTML = `<h3>${video.snippet.title}</h3>
-            <iframe width="560" height="315" 
-                src="https://www.youtube.com/embed/${video.snippet.resourceId.videoId}" 
-                frameborder="0" allowfullscreen>
+    videoSection.innerHTML = `
+            <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&fs=0&disablekb=1&iv_load_policy=3&playsinline=1" 
+                frameborder="0" allow="autoplay" allowfullscreen>
             </iframe>`;
 }
 
