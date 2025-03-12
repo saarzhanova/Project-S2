@@ -1,19 +1,33 @@
-const videoSection = document.getElementById('videoSection')
+const videoSection = document.getElementById('videoSection');
+const apiKey = 'AIzaSyA70eaZK2Ds326pSPYYG4TsxXy0CIyeZuo';
+const playlistId = 'UUlODDXeUIz1-FaKyN8dsNrA';
+const maxResults = 50;
+let nextPageToken = null;
+let i = 1;
 
-fetch('https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1000&playlistId=UUlODDXeUIz1-FaKyN8dsNrA&key=AIzaSyA70eaZK2Ds326pSPYYG4TsxXy0CIyeZuo')
-    .then(res => res.json())
-    .then(data => {
-        console.log(data)
-        let videos = data.items;
-        console.log(videos);
-        let i = 1
+async function fetchVideos(pageToken = '') {
+    const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${maxResults}&playlistId=${playlistId}&key=${apiKey}&pageToken=${pageToken}`;
 
-        videos.forEach(video => {
-            videoSection.innerHTML += "<h3>" + i + ". " + video.snippet.title + "</h3>"
-            i += 1
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        let allVideos = data.items
 
-        });
-    }).catch(err => {
-        console.log(err);
-        videoSection.innerHTML = "<h3>Error: $(err)</h3>"
-    });
+        if (allVideos) {
+            allVideos.forEach(video => {
+                videoSection.innerHTML += `<h3>${i}. ${video.snippet.title}</h3>`;
+                i++;
+            });
+        }
+
+        let isNextPageExists = data.nextPageToken
+        if (isNextPageExists) {
+            fetchVideos(data.nextPageToken);
+        }
+    } catch (err) {
+        console.error(err);
+        videoSection.innerHTML = `<h3>Error: ${err.message}</h3>`;
+    }
+}
+
+fetchVideos();
