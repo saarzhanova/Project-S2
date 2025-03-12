@@ -1,4 +1,7 @@
 const videoSection = document.getElementById('videoSection');
+const loadingMessage = document.getElementById('loadingMessage');
+const randomButton = document.getElementById('randomButton');
+
 const apiKey = 'AIzaSyA70eaZK2Ds326pSPYYG4TsxXy0CIyeZuo';
 const playlistId = 'UUlODDXeUIz1-FaKyN8dsNrA';
 const maxResults = 50;
@@ -23,7 +26,9 @@ async function fetchVideos(pageToken = '') {
         if (isNextPageExists) {
             fetchVideos(data.nextPageToken);
         } else {
-        console.log(`Loaded video number: ${allVideos.length}`);
+            loadingMessage.style.display = 'none';
+            randomButton.disabled = false;
+            console.log(`Loaded video number: ${allVideos.length}`);
         }
     } catch (err) {
         console.error(err);
