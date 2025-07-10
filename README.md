@@ -1,5 +1,8 @@
 # Flask Video Survey App
 
+![image](https://github.com/user-attachments/assets/5119cf7a-df95-4b05-a977-519ec8518ca4)
+
+
 ## Description
 This is a simple Flask web application.
 
