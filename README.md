@@ -31,7 +31,7 @@ This is a simple Flask web application.
 
 2. Start the server:
     ```
-    python server.py
+    python survey.py
     ```
 
 3. Open your browser and go to:
